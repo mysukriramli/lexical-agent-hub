@@ -13,7 +13,7 @@ dependencies = [
     "pyarrow>=15.0.0",
     "pydantic>=2.7.0",
     "pydantic-settings>=2.2.0",
-    "mcp[cli]>=1.0.0",
+    "mcp[cli]<2",
 ]
 
 [project.optional-dependencies]
