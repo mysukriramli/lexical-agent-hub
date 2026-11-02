@@ -1,0 +1,41 @@
+name: Run Daily Lexical Agent Workflow
+
+on:
+  schedule:
+    # Runs automatically every day at midnight UTC
+    - cron: '0 0 * * *'
+  # Allows you to click a button on GitHub to run it anytime
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python Runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Project Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Run Test Agent Search Simulation
+        run: |
+          python test_run.py
+
+      - name: Commit and Push Generated Parquet Partitions
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/history/
+          git commit -m "chore(telemetry): auto-commit daily parquet partitions [skip ci]" || echo "No changes to commit"
+          git push origin main
