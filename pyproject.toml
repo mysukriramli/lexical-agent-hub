@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lexical-agent-hub"
+version = "0.1.0"
+description = "Zero-copy remote dictionary reader, deterministic lexical math engine, and partitioned Parquet telemetry logger for AI agents"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "duckdb>=0.10.0",
+    "pyarrow>=15.0.0",
+    "pydantic>=2.7.0",
+    "pydantic-settings>=2.2.0",
+    "mcp[cli]>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["src"]
